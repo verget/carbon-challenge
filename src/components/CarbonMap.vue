@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="map">
     <svg
       viewBox="300 150 500 1020"
       xmlns="http://www.w3.org/2000/svg"
@@ -7,28 +7,30 @@
       xmlns:xlink="http://www.w3.org/1999/xlink"
       version="1.1"
     >
-      <defs>
-        <!-- All areas are listed in the line below. You can use this list in your script. -->
-        <!--{id:"GB-UKC"},{id:"GB-UKD"},{id:"GB-UKE"},{id:"GB-UKF"},{id:"GB-UKG"},{id:"GB-UKH"},{id:"GB-UKI"},{id:"GB-UKJ"},{id:"GB-UKK"},{id:"GB-UKL"},{id:"GB-UKM"},{id:"GB-UKN"},{id:"GG"},{id:"JE"},{id:"IM"},{id:"IE"}-->
-      </defs>
       <g>
         <NorthEast
           @click="regionSelected('NorthEast')"
-          ref="NorthEast"
-          class="ass"
+          :class="defineClass(4)"
         />
-        <NorthWest />
-        <Yorkshire />
-        <EastMidlands />
-        <WestMidlands />
-        <EastOfEngland />
-        <London />
-        <SouthEast />
-        <SouthWest />
-        <Wales />
-        <Scotland />
+        <NorthWest :class="defineClass(3)" />
+        <Yorkshire :class="defineClass(5)" />
+        <EastMidlands :class="defineClass(9)" />
+        <WestMidlands :class="defineClass(8)" />
+        <EastOfEngland :class="defineClass(10)" />
+        <London :class="defineClass(13)" />
+        <SouthEast :class="defineClass(14)" />
+        <SouthWest :class="defineClass(11)" />
+        <Wales :class="defineClass(17)" />
+        <Scotland :class="defineClass(16)" />
       </g>
     </svg>
+    <div class="map__legend">
+      <span class="text-danger">Very High</span>
+      <span class="text-warning">High</span>
+      <span class="text-info">Moderate</span>
+      <span class="text-primary">Low</span>
+      <span class="text-success">Very Low</span>
+    </div>
   </div>
 </template>
 
@@ -70,6 +72,7 @@ import { Options, Vue } from 'vue-class-component'
 })
 export default class CarbonMap extends Vue {
   public loading = false
+  public colorMap = new Map([[4, '']])
 
   get regionsData(): RegionIntencity[] {
     return store.state.regionsData
@@ -89,19 +92,50 @@ export default class CarbonMap extends Vue {
     console.log(name)
   }
 
-  paintRegions(data: RegionIntencity[]) {
-    ;(this.$refs['NorthEast'] as any).$el.classList.value = 'red'
-    console.log(data)
+  defineClass(regionId: number): string {
+    return this.colorMap.get(regionId) || ''
+  }
+
+  paintRegions(data: RegionIntencity[]): void {
+    for (let element of data) {
+      this.colorMap.set(
+        element.regionid,
+        this.determineClassName(element?.intensity?.index)
+      )
+    }
+  }
+
+  determineClassName(intensityIndex: string | null): string {
+    switch (intensityIndex) {
+      case 'very low':
+        return 'very-low-level'
+      case 'low':
+        return 'low-level'
+      case 'moderate':
+        return 'moderate-level'
+      case 'high':
+        return 'high-level'
+      case 'very high':
+        return 'very-high-level'
+      default:
+        return ''
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-svg {
-  width: 350px;
+@import '@/assets/styles/colors.scss';
+
+.map {
+  .map__legend {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
 }
-.red {
-  fill: #e67e22;
+svg {
+  width: 100%;
 }
 .land {
   fill: #cccccc;
@@ -112,6 +146,33 @@ svg {
   cursor: pointer;
   &:hover {
     stroke-width: 2;
+  }
+}
+.very-low-level {
+  fill: $success;
+}
+.low-level {
+  fill: $primary;
+}
+.moderate-level {
+  fill: $info;
+}
+.high-level {
+  fill: $warning;
+}
+.very-high-level {
+  fill: $danger;
+}
+
+@media screen and (max-width: 750px) {
+  #app {
+    padding: 4rem;
+    .map {
+      .map__legend {
+        display: flex;
+        flex-direction: column;
+      }
+    }
   }
 }
 </style>

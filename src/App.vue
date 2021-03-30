@@ -18,7 +18,7 @@ export default class App extends Vue {}
 #app {
   background: #fff;
   max-width: 68rem;
-  margin: 2rem auto 4rem auto;
+  margin: 1rem auto 3rem auto;
   padding: 1rem;
   padding-top: 0;
   position: relative;
@@ -26,23 +26,12 @@ export default class App extends Vue {}
 }
 @media screen and (min-width: 550px) {
   #app {
-    padding: 4rem;
+    padding: 2rem;
   }
 }
 #app > * {
   max-width: 50rem;
   margin-left: auto;
   margin-right: auto;
-}
-#app > form {
-  max-width: 100%;
-}
-#app h1 {
-  display: block;
-  min-width: 100%;
-  width: 100%;
-  text-align: center;
-  margin: 0;
-  margin-bottom: 1rem;
 }
 </style>

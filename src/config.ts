@@ -25,8 +25,3 @@ interface ColorOption {
   key: string
   value: string
 }
-
-
-export const regionsList = [
-  id: number,
-]

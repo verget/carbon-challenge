@@ -1,3 +1,5 @@
+@import '@/assets/styles/colors.scss';
+
 * {
   box-sizing: border-box;
 }
@@ -12,4 +14,24 @@ html {
 body {
   position: relative;
   background: #f4fafe;
+}
+
+.text-success {
+  color: $success;
+}
+
+.text-primary {
+  color: $primary;
+}
+
+.text-info {
+  color: $info;
+}
+
+.text-warning {
+  color: $warning;
+}
+
+.text-danger {
+  color: $danger;
 }
