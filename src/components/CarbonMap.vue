@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <img src="@/assets/images/unitedKingdomLow.svg" alt=""> -->
-
     <svg
       viewBox="300 150 500 1020"
       xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +12,11 @@
         <!--{id:"GB-UKC"},{id:"GB-UKD"},{id:"GB-UKE"},{id:"GB-UKF"},{id:"GB-UKG"},{id:"GB-UKH"},{id:"GB-UKI"},{id:"GB-UKJ"},{id:"GB-UKK"},{id:"GB-UKL"},{id:"GB-UKM"},{id:"GB-UKN"},{id:"GG"},{id:"JE"},{id:"IM"},{id:"IE"}-->
       </defs>
       <g>
-        <NorthEast @click="regionSelected('NorthEast')" />
+        <NorthEast
+          @click="regionSelected('NorthEast')"
+          ref="NorthEast"
+          class="ass"
+        />
         <NorthWest />
         <Yorkshire />
         <EastMidlands />
@@ -31,7 +33,6 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
 import NorthEast from '@/components/regions/NorthEast.vue'
 import NorthWest from '@/components/regions/NorthWest.vue'
 import Yorkshire from '@/components/regions/Yorkshire.vue'
@@ -43,6 +44,9 @@ import Scotland from '@/components/regions/Scotland.vue'
 import SouthEast from '@/components/regions/SouthEast.vue'
 import SouthWest from '@/components/regions/SouthWest.vue'
 import Wales from '@/components/regions/Wales.vue'
+import store from '@/store'
+import { RegionIntencity } from '@/models/RegionIntencity'
+import { Options, Vue } from 'vue-class-component'
 
 @Options({
   components: {
@@ -58,19 +62,46 @@ import Wales from '@/components/regions/Wales.vue'
     SouthWest,
     Wales,
   },
+  watch: {
+    regionsData: function (value) {
+      this.paintRegions(value)
+    },
+  },
 })
 export default class CarbonMap extends Vue {
-  msg!: string
+  public loading = false
+
+  get regionsData(): RegionIntencity[] {
+    return store.state.regionsData
+  }
+
+  mounted(): void {
+    this.loadData()
+  }
+
+  async loadData(): Promise<void> {
+    this.loading = true
+    await store.dispatch('loadRegionsData')
+    this.loading = false
+  }
 
   regionSelected(name: string): void {
     console.log(name)
+  }
+
+  paintRegions(data: RegionIntencity[]) {
+    ;(this.$refs['NorthEast'] as any).$el.classList.value = 'red'
+    console.log(data)
   }
 }
 </script>
 
 <style lang="scss" scoped>
 svg {
-  width: 100%;
+  width: 350px;
+}
+.red {
+  fill: #e67e22;
 }
 .land {
   fill: #cccccc;

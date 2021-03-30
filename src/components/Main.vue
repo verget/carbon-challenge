@@ -1,6 +1,6 @@
 <template>
   <div>
-    <carbon-map />
+    <CarbonMap />
   </div>
 </template>
 
@@ -13,9 +13,7 @@ import CarbonMap from '@/components/CarbonMap.vue'
     CarbonMap,
   },
 })
-export default class Main extends Vue {
-  msg!: string
-}
+export default class Main extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

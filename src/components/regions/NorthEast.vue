@@ -8,8 +8,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
+import { Vue } from 'vue-class-component'
 
-@Options({})
 export default class NorthEast extends Vue {}
 </script>
