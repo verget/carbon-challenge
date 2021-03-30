@@ -52,7 +52,23 @@
     "parserOptions": {
       "ecmaVersion": 2020
     },
-    "rules": {},
+    "rules": {
+      "vue/max-attributes-per-line": [
+        "error",
+        {
+          "singleline": 3,
+          "multiline": {
+            "max": 1,
+            "allowFirstLine": false
+          }
+        }
+      ],
+      "semi": [
+        2,
+        "never"
+      ],
+      "quotes": ["error", "single"]
+    },
     "overrides": [
       {
         "files": [
@@ -64,6 +80,11 @@
         }
       }
     ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 2,
+    "semi": false
   },
   "browserslist": [
     "> 1%",
