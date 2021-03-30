@@ -72,20 +72,11 @@ import { Options, Vue } from 'vue-class-component'
 })
 export default class CarbonMap extends Vue {
   public loading = false
-  public colorMap = new Map([[4, '']])
+  public colorMap = new Map()
+  // vue2 couldn't use Map for change detection so I just can't resist
 
   get regionsData(): RegionIntencity[] {
     return store.state.regionsData
-  }
-
-  mounted(): void {
-    this.loadData()
-  }
-
-  async loadData(): Promise<void> {
-    this.loading = true
-    await store.dispatch('loadRegionsData')
-    this.loading = false
   }
 
   regionSelected(name: string): void {
