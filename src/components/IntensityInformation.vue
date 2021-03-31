@@ -6,6 +6,7 @@
         class="information-block__cancel-icon"
         src="@/assets/images/cancel.svg"
         alt="Cancel"
+        role="button"
         @click="cancelRegionSelection"
       />
     </p>

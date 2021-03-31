@@ -104,7 +104,7 @@ export default class Main extends Vue {
   }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 700px) {
   .main {
     grid-template-areas:
       'chart'

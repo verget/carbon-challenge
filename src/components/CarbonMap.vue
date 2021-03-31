@@ -154,7 +154,7 @@ svg {
   fill: $danger;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 400px) {
   #app {
     padding: 4rem;
     .map {

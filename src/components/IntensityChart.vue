@@ -37,7 +37,7 @@ export default class IntensityChart extends Vue {
     },
     plotOptions: {
       pie: {
-        customScale: 1.1,
+        customScale: 1,
       },
     },
   }
