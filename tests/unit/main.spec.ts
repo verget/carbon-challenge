@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import Main from '@/components/Main.vue'
+import CarbonMap from '@/components/CarbonMap.vue'
 import store from '../../src/store'
 
 jest.mock('../../src/store', () => ({
@@ -20,7 +21,7 @@ describe('Main.vue', () => {
   })
 
   it('region selection should trigger action call', () => {
-    wrapper.vm.handleRegionSelect(2)
+    wrapper.findComponent(CarbonMap).vm.$emit('region-selected', 2)
     expect(store.dispatch).toHaveBeenCalled()
   })
 })
