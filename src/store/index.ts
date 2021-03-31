@@ -9,6 +9,7 @@ export default createStore({
     generationMix: [],
     lastCallFrom: '',
     lastCallTo: '',
+    selectedRegion: '',
   },
   mutations: {
     SET_REGIONS_DATA(state, data) {
@@ -22,6 +23,9 @@ export default createStore({
     },
     SET_LAST_CALL_TO(state, data) {
       state.lastCallTo = data || ''
+    },
+    SET_SELECTED_REGION(state, data) {
+      state.selectedRegion = data || ''
     },
   },
   actions: {
@@ -45,10 +49,25 @@ export default createStore({
           url: `${baseURL}/generation`,
           method: 'get',
         })
-        console.log(response.data)
         commit('SET_GENERATION_MIX', response?.data?.generationmix)
         commit('SET_LAST_CALL_FROM', response?.data?.from)
         commit('SET_LAST_CALL_TO', response?.data?.to)
+        commit('SET_SELECTED_REGION', '')
+      } catch (error) {
+        console.error(error)
+      }
+    },
+
+    async loadRegionGenerationMix({ commit }, regionId) {
+      try {
+        const response = await http({
+          url: `${baseURL}/regional/regionid/${regionId}`,
+          method: 'get',
+        })
+        commit('SET_GENERATION_MIX', response?.data[0]?.data[0]?.generationmix)
+        commit('SET_LAST_CALL_FROM', response?.data[0]?.data[0]?.from)
+        commit('SET_LAST_CALL_TO', response?.data[0]?.data[0]?.to)
+        commit('SET_SELECTED_REGION', response?.data[0]?.shortname)
       } catch (error) {
         console.error(error)
       }

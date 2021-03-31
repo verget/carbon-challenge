@@ -8,20 +8,17 @@
       version="1.1"
     >
       <g>
-        <NorthEast
-          @click="regionSelected('NorthEast')"
-          :class="defineClass(4)"
-        />
-        <NorthWest :class="defineClass(3)" />
-        <Yorkshire :class="defineClass(5)" />
-        <EastMidlands :class="defineClass(9)" />
-        <WestMidlands :class="defineClass(8)" />
-        <EastOfEngland :class="defineClass(10)" />
-        <London :class="defineClass(13)" />
-        <SouthEast :class="defineClass(14)" />
-        <SouthWest :class="defineClass(11)" />
-        <Wales :class="defineClass(17)" />
-        <Scotland :class="defineClass(16)" />
+        <NorthEast @click="regionSelected(4)" :class="defineClass(4)" />
+        <NorthWest :class="defineClass(3)" @click="regionSelected(3)" />
+        <Yorkshire :class="defineClass(5)" @click="regionSelected(5)" />
+        <EastMidlands :class="defineClass(9)" @click="regionSelected(9)" />
+        <WestMidlands :class="defineClass(8)" @click="regionSelected(8)" />
+        <EastOfEngland :class="defineClass(10)" @click="regionSelected(10)" />
+        <London :class="defineClass(13)" @click="regionSelected(13)" />
+        <SouthEast :class="defineClass(14)" @click="regionSelected(14)" />
+        <SouthWest :class="defineClass(11)" @click="regionSelected(11)" />
+        <Wales :class="defineClass(17)" @click="regionSelected(17)" />
+        <Scotland :class="defineClass(16)" @click="regionSelected(16)" />
       </g>
     </svg>
     <div class="map__legend">
@@ -46,7 +43,6 @@ import Scotland from '@/components/regions/Scotland.vue'
 import SouthEast from '@/components/regions/SouthEast.vue'
 import SouthWest from '@/components/regions/SouthWest.vue'
 import Wales from '@/components/regions/Wales.vue'
-import store from '@/store'
 import { RegionIntencity } from '@/models/RegionIntencity'
 import { Options, Vue } from 'vue-class-component'
 
@@ -64,6 +60,12 @@ import { Options, Vue } from 'vue-class-component'
     SouthWest,
     Wales,
   },
+  props: {
+    regionsData: {
+      type: Object,
+      required: false,
+    },
+  },
   watch: {
     regionsData: function (value) {
       this.paintRegions(value)
@@ -75,12 +77,8 @@ export default class CarbonMap extends Vue {
   public colorMap = new Map()
   // vue2 couldn't use Map for change detection so I just can't resist
 
-  get regionsData(): RegionIntencity[] {
-    return store.state.regionsData
-  }
-
-  regionSelected(name: string): void {
-    console.log(name)
+  regionSelected(regionId: number): void {
+    this.$emit('regionSelected', regionId)
   }
 
   defineClass(regionId: number): string {
@@ -123,6 +121,7 @@ export default class CarbonMap extends Vue {
     display: flex;
     justify-content: space-between;
     margin-top: 24px;
+    font-size: 14px;
   }
 }
 svg {
@@ -155,7 +154,7 @@ svg {
   fill: $danger;
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 800px) {
   #app {
     padding: 4rem;
     .map {

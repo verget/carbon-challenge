@@ -1,34 +1,53 @@
 <template>
   <div class="information-block card">
-    <p>Data collection interval: <br />{{ lastCallFrom }} - {{ lastCallTo }}</p>
-    <p>Choose region to see detailed information</p>
+    <p v-if="selectedRegion">
+      {{ selectedRegion }}
+      <img
+        class="information-block__cancel-icon"
+        src="@/assets/images/cancel.svg"
+        alt="Cancel"
+        @click="cancelRegionSelection"
+      />
+    </p>
+    <p v-else>Choose region to see detailed information</p>
+    <p>
+      Data collection interval:
+      <br />
+      {{ lastCallFromFormated }} - {{ lastCallToFormated }}
+    </p>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
+import { Vue } from 'vue-class-component'
 import store from '@/store'
 
-@Options({
-  watch: {
-    regionsData: function (value) {
-      console.log(value)
-    },
-  },
-})
 export default class IntensityChart extends Vue {
-  get lastCallFrom(): string {
+  get lastCallFromFormated(): string {
     return store?.state?.lastCallFrom
       ? new Date(store.state.lastCallFrom).toLocaleTimeString('en-US')
       : ''
   }
 
-  get lastCallTo(): string {
-    return store.state.lastCallTo
+  get lastCallToFormated(): string {
+    return store?.state?.lastCallTo
       ? new Date(store.state.lastCallTo).toLocaleTimeString('en-US')
       : ''
   }
+
+  get selectedRegion(): string {
+    return store.state.selectedRegion
+  }
+
+  cancelRegionSelection(): void {
+    this.$emit('clearRegion')
+  }
 }
 </script>
-
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.information-block__cancel-icon {
+  height: 14px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+</style>

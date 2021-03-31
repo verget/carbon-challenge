@@ -1,27 +1,11 @@
-export const colorScale: ColorOption[] = [
-  {
-    key: 'very low',
-    value: '#1E8449',
-  },
-  {
-    key: 'low',
-    value: '#7DCEA',
-  },
-  {
-    key: 'moderate',
-    value: '#F1C40F',
-  },
-  {
-    key: 'high',
-    value: '#E67E22',
-  },
-  {
-    key: 'very high',
-    value: '#A93226',
-  },
+export const chartColors: string[] = [
+  '#7DCEA0',
+  '#C0C9CA',
+  '#DB7633',
+  '#2980B9',
+  '#AD79C3',
+  '#D6EAF9',
+  '#F7DC6F',
+  '#1E8449',
+  '#FFD3DB',
 ]
-
-interface ColorOption {
-  key: string
-  value: string
-}
