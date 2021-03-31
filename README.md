@@ -1,29 +1,40 @@
-# carbon-challenge
+# Front-end Development Challenge
 
-## Project setup
-```
-npm install
+This is a technical challenge to test Front-end development-related skills.
+## Installation
+
+Simply npm install.
+
+```bash
+npm i
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
+## Usage
+
+### Development server
+
+```bash
+npm run dev
 ```
 
-### Compiles and minifies for production
+You can view the development server at `localhost:8080`.
+
+### Testing
+
+```bash
+npm run test:unit
 ```
+### Production build
+
+```bash
 npm run build
 ```
 
-### Run your unit tests
-```
-npm run test:unit
-```
+## Technologies & Links
 
-### Lints and fixes files
-```
-npm run lint
-```
+- [Vue.js 3](https://v3.vuejs.org/)
+- [Typescript 4.1](https://www.typescriptlang.org/)
+- [apexcharts](https://apexcharts.com/)
+- [Jest](https://jestjs.io/)
+- [National Grid API](https://carbon-intensity.github.io/)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
