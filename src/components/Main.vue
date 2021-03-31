@@ -7,15 +7,7 @@
       />
     </div>
     <div class="chart-container">
-      <div v-if="loading" class="spinner-container">
-        <Spinner class="spinner" />
-      </div>
-      <IntensityChart
-        v-else
-        :chartOptions="intensityChartOptions"
-        class="chart"
-        :chartData="intensityChartData"
-      />
+      <IntensityChart ref="chart" />
     </div>
     <div class="info-container">
       <IntensityInformation @clear-region="handleClearRegion" />
@@ -27,13 +19,11 @@
 import { Options, Vue } from 'vue-class-component'
 import CarbonMap from '@/components/CarbonMap.vue'
 import IntensityInformation from '@/components/IntensityInformation.vue'
-import IntensityChart from '@/components/IntensityChart.vue'
 import Spinner from '@/components/Spinner.vue'
+import IntensityChart from '@/components/IntensityChart.vue'
 import { GenerationMix } from '@/models/GenerationMix'
 import store from '@/store'
 import { RegionIntencity } from '@/models/RegionIntencity'
-import { chartColors } from '@/config'
-import { debounce } from 'lodash'
 
 @Options({
   components: {
@@ -51,48 +41,12 @@ import { debounce } from 'lodash'
           labels.push(element.fuel)
           dataset.push(element.perc)
         }
-        this.intensityChartData.datasets[0].data = dataset
-        this.intensityChartData.labels = labels
+        this.$refs.chart.updateChart(dataset, labels)
       }
     },
   },
 })
 export default class Main extends Vue {
-  public loading = true
-  public show = true
-  private debouncedAPICall = debounce(async (regionId: number) => {
-    this.loading = true
-    await store.dispatch('loadRegionGenerationMix', regionId)
-    this.loading = false
-  }, 500)
-  public intensityChartOptions = {
-    responsive: true,
-    aspectRatio: 1,
-    tooltips: {
-      callbacks: {
-        label: function (
-          tooltipItem: Record<string, number>,
-          data: Record<string, Record<string, Record<string, string>>>
-        ): string {
-          return (
-            data['labels'][tooltipItem['index']] +
-            ': ' +
-            data['datasets'][0]['data'][tooltipItem['index']] +
-            '%'
-          )
-        },
-      },
-    },
-  }
-  public intensityChartData = {
-    datasets: [
-      {
-        data: [],
-        backgroundColor: chartColors,
-      },
-    ],
-  }
-
   get generationMix(): GenerationMix[] {
     return store.state.generationMix
   }
@@ -101,16 +55,12 @@ export default class Main extends Vue {
     return store.state.regionsData
   }
 
-  handleRegionSelect(regionId: number): void {
-    if (!this.loading && this.debouncedAPICall) {
-      this.debouncedAPICall(regionId)
-    }
+  async handleRegionSelect(regionId: number): Promise<void> {
+    await store.dispatch('loadRegionGenerationMix', regionId)
   }
 
   async handleClearRegion(): Promise<void> {
-    this.loading = true
     await store.dispatch('loadTotalGenerationMix')
-    this.loading = false
   }
 
   mounted(): void {
@@ -118,10 +68,8 @@ export default class Main extends Vue {
   }
 
   async loadData(): Promise<void> {
-    this.loading = true
     await store.dispatch('loadRegionsData')
     await store.dispatch('loadTotalGenerationMix')
-    this.loading = false
   }
 }
 </script>
@@ -133,19 +81,8 @@ export default class Main extends Vue {
     'map chart'
     'map info';
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 3fr 2fr;
   grid-gap: 3vw;
-}
-.spinner-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  .spinner {
-    width: 40%;
-    opacity: 0.6;
-  }
 }
 .map-container {
   grid-area: map;
@@ -156,9 +93,6 @@ export default class Main extends Vue {
   grid-area: chart;
   width: 100%;
   height: 100%;
-  .chart {
-    width: 84%;
-  }
 }
 .info-container {
   grid-area: info;
