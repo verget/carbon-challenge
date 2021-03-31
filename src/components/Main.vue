@@ -16,13 +16,12 @@
 </template>
 
 <script lang="ts">
+import store from '@/store'
 import { Options, Vue } from 'vue-class-component'
 import CarbonMap from '@/components/CarbonMap.vue'
 import IntensityInformation from '@/components/IntensityInformation.vue'
-import Spinner from '@/components/Spinner.vue'
 import IntensityChart from '@/components/IntensityChart.vue'
 import { GenerationMix } from '@/models/GenerationMix'
-import store from '@/store'
 import { RegionIntencity } from '@/models/RegionIntencity'
 
 @Options({
@@ -30,7 +29,6 @@ import { RegionIntencity } from '@/models/RegionIntencity'
     CarbonMap,
     IntensityInformation,
     IntensityChart,
-    Spinner,
   },
   watch: {
     generationMix: function (values) {
@@ -55,16 +53,16 @@ export default class Main extends Vue {
     return store.state.regionsData
   }
 
+  mounted(): void {
+    this.loadData()
+  }
+
   async handleRegionSelect(regionId: number): Promise<void> {
     await store.dispatch('loadRegionGenerationMix', regionId)
   }
 
   async handleClearRegion(): Promise<void> {
     await store.dispatch('loadTotalGenerationMix')
-  }
-
-  mounted(): void {
-    this.loadData()
   }
 
   async loadData(): Promise<void> {
