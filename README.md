@@ -30,6 +30,10 @@ npm run test:unit
 npm run build
 ```
 
+## Check it out
+
+https://mystifying-brown-ca8b20.netlify.app/
+
 ## Technologies & Links
 
 - [Vue.js 3](https://v3.vuejs.org/)
