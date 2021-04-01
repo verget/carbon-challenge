@@ -7,13 +7,16 @@
 html {
   font-size: 1em;
   height: 100%;
+  overflow: hidden;
   font-family: Europa,Helvetica Neue,Helvetica,sans-serif;
   color: #002d3c;
 }
 
 body {
   position: relative;
-  background: #002D3C;
+  margin: 0px;
+  overflow: auto;
+  height: 100%;
 }
 
 .text-success {
@@ -38,7 +41,7 @@ body {
 
 .card {
   background: #fff;
-  margin: 1rem auto 3rem auto;
+  margin: 0 auto 3rem auto;
   padding: 1rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2.5rem 5rem 0 rgba(0, 0, 0, 0.1);
 }

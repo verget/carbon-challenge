@@ -10,6 +10,7 @@ export default createStore({
     lastCallFrom: '',
     lastCallTo: '',
     selectedRegion: '',
+    theme: 'dark',
   },
   mutations: {
     SET_REGIONS_DATA(state, data) {
@@ -26,6 +27,9 @@ export default createStore({
     },
     SET_SELECTED_REGION(state, data) {
       state.selectedRegion = data || ''
+    },
+    SET_THEME(state, data) {
+      state.theme = data || ''
     },
   },
   actions: {
